@@ -17,13 +17,22 @@ Route::get(
         return view('welcome');
     }
 );
-
+Auth::routes();
+Route::get('/home', 'HomeController@index')->name('home');
 //Route::resource('rest', 'RestTestController')->names('restTest');
 
 Route::group(['namespace' => 'Blog', 'prefix' => 'blog'], function () {
     Route::resource('posts', 'PostController')->names('blog.posts');
 });
 
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
+//>Админка Блога
+$groupData = [
+    'namespace' => 'Blog\Admin',
+    'prefix' => 'admin/blog',
+];
+Route::group($groupData, function () {
+    //BlogCategory
+    Route::resource('categories', 'Blog\Admin\CategoryController')
+        ->names('blog.admin.categories');
+});
+//<
